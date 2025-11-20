@@ -4,183 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pede Aí - Pedidos na Obra via WhatsApp</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' ry='20' fill='%23667eea'/%3E%3Ccircle cx='35' cy='40' r='6' fill='%23fff'/%3E%3Ccircle cx='65' cy='40' r='6' fill='%23fff'/%3E%3Crect x='25' y='55' width='50' height='8' rx='4' fill='%23fff'/%3E%3Crect x='20' y='15' width='60' height='10' rx='5' fill='%23764ba2'/%3E%3C/svg%3E">
     <style>
-        :root { 
-            --bg1:#b8d4f1; 
-            --bg2:#d4e7f7; 
-            --text:#2c3e50; 
-            --muted:#5a6c7d; 
-            --accent:#7fa8d1; 
-        }
-        body { 
-            background: linear-gradient(135deg, var(--bg1), var(--bg2)); 
-            min-height: 100vh;
-            color: var(--text);
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        :root { --bg1:#b8d4f1; --bg2:#d4e7f7; --text:#2c3e50; --muted:#5a6c7d; --card:#ffffff; --accent:#7fa8d1; }
+        body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.5; background: linear-gradient(135deg, var(--bg1), var(--bg2)); color: var(--text); }
+        .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+        header { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,0.98); backdrop-filter: blur(8px); box-shadow: 0 2px 14px rgba(0,0,0,0.08); }
+        .nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+        .brand { font-weight: 800; font-size: 1.1rem; color: var(--accent); display: flex; align-items: center; gap: 8px; letter-spacing: .2px; }
+        .brand i { font-style: normal; background: linear-gradient(135deg, var(--accent), var(--bg1)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.6rem; cursor: pointer; color: var(--accent); padding: 4px; }
+        .links { display: flex; gap: 20px; align-items: center; }
+        .links a { color: var(--accent); text-decoration: none; font-weight: 600; font-size: .92rem; padding: 6px 8px; position: relative; transition: color .2s; }
+        .links a::after { content: ""; position: absolute; left: 0; bottom: -2px; height: 2px; width: 0; background: var(--accent); transition: width .25s; }
+        .links a:hover { color: var(--bg1); }
+        .links a:hover::after { width: 100%; }
+        @media (max-width: 767px) {
+            .menu-toggle { display: block; }
+            .links { position: fixed; top: 62px; left: 0; right: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(12px); flex-direction: column; gap: 0; padding: 16px 0; box-shadow: 0 8px 24px rgba(0,0,0,0.12); display: none; }
+            .links.active { display: flex; }
+            .links a { width: 100%; padding: 14px 24px; border-bottom: 1px solid rgba(184,212,241,0.2); }
+            .links a::after { display: none; }
         }
 
-        /* Header */
-        header { 
-            position: sticky; 
-            top: 0; 
-            z-index: 1020; 
-            background: rgba(255,255,255,0.98); 
-            backdrop-filter: blur(8px); 
-            box-shadow: 0 2px 14px rgba(0,0,0,0.08); 
-        }
-        .navbar-brand { 
-            font-weight: 800; 
-            color: var(--accent) !important; 
-            font-size: 1.1rem;
-        }
-        .navbar-nav .nav-link { 
-            color: var(--accent) !important; 
-            font-weight: 600; 
-            transition: all .2s;
-        }
-        .navbar-nav .nav-link:hover { 
-            color: var(--bg1) !important; 
-        }
+        main { padding: 22px 0 40px; }
+        section { background: var(--card); border-radius: 18px; box-shadow: 0 10px 28px rgba(0,0,0,.12); padding: 32px 24px; margin: 22px auto; }
+        h1 { font-size: 2.4rem; font-weight: 900; background: linear-gradient(135deg, var(--accent), var(--bg1)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; line-height: 1.15; }
+        h2 { font-size: 1.6rem; font-weight: 800; color: var(--accent); margin-bottom: 16px; }
+        h3 { font-size: 1.08rem; font-weight: 750; color: var(--text); margin-bottom: 6px; }
+        p { color: var(--muted); margin-bottom: 10px; }
 
-        /* Sections */
-        section { 
-            background: #fff; 
-            border-radius: 18px; 
-            box-shadow: 0 10px 28px rgba(0,0,0,.12); 
-        }
-        
-        /* Hero */
-        .hero { 
-            background: linear-gradient(135deg, var(--bg1), var(--bg2)); 
-            color: var(--text); 
-        }
-        
-        /* WhatsApp Mockup */
-        .whatsapp-screen { 
-            max-width: 420px; 
-            margin: 0 auto; 
-            background: #fff; 
-            border-radius: 24px; 
-            overflow: hidden; 
-            box-shadow: 0 20px 60px rgba(0,0,0,.3); 
-        }
-        .whatsapp-header { 
-            background: var(--accent); 
-            color: #fff; 
-            padding: 12px 16px; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-        }
-        .whatsapp-header .avatar { 
-            width: 36px; 
-            height: 36px; 
-            border-radius: 50%; 
-            background: #25d366; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 1.2rem; 
-        }
-        .whatsapp-chat { 
-            background: #ece5dd; 
-            padding: 16px 12px; 
-            min-height: 280px; 
-        }
-        .msg { 
-            margin-bottom: 8px; 
-            display: flex; 
-        }
-        .msg.me { justify-content: flex-end; }
-        .msg.ai { justify-content: flex-start; }
-        .msg-bubble { 
-            max-width: 75%; 
-            padding: 8px 10px; 
-            border-radius: 8px; 
-            font-size: .9rem; 
-            line-height: 1.4; 
-        }
-        .msg.me .msg-bubble { 
-            background: #dcf8c6; 
-            color: #000; 
-            border-radius: 8px 8px 0 8px; 
-        }
-        .msg.ai .msg-bubble { 
-            background: #fff; 
-            color: #000; 
-            border-radius: 8px 8px 8px 0; 
-        }
-        .msg-time { 
-            font-size: .7rem; 
-            color: #667; 
-            margin-top: 2px; 
-            text-align: right; 
-        }
-
-        /* Cards */
-        .card { 
-            border: 1px solid rgba(184,212,241,.25); 
-            transition: transform .25s, box-shadow .25s; 
-        }
-        .card:hover { 
-            transform: translateY(-6px); 
-            box-shadow: 0 14px 28px rgba(184,212,241,.3) !important; 
-        }
-        .emoji { 
-            font-size: 2.5rem; 
-            display: block; 
-            margin-bottom: 10px; 
-        }
-
-        /* Buttons */
-        .btn-primary { 
-            background: linear-gradient(135deg, var(--accent), var(--bg1)); 
-            border: 0; 
-            font-weight: 700; 
-        }
-        .btn-outline-primary { 
-            color: var(--accent); 
-            border-color: var(--accent); 
-        }
-        .btn-outline-primary:hover { 
-            background: var(--accent); 
-            border-color: var(--accent); 
-        }
-        .btn-success { 
-            background: #25D366; 
-            border: 0; 
-            font-weight: 700; 
-        }
-
-        /* Typography */
-        h1, h2 { 
-            background: linear-gradient(135deg, var(--accent), var(--bg1)); 
-            -webkit-background-clip: text; 
-            background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            font-weight: 900; 
-        }
-        .text-muted { color: var(--muted) !important; }
-
-        /* Features list */
-        .features { 
-            list-style: none; 
-            padding: 0; 
-        }
-        .features li { 
-            padding: 10px 0 10px 28px; 
-            position: relative; 
-        }
-        .features li::before { 
-            content: "✓"; 
-            position: absolute; 
-            left: 0; 
-            top: 10px; 
-            color: var(--accent); 
-            font-weight: 900; 
-        }
-    </style>
+        .hero { background: linear-gradient(135deg, var(--bg1), var(--bg2)); color: var(--text); padding: 40px 24px; }
+        .hero-intro { text-align: center; margin-bottom: 28px; }
+        .hero-intro h1 { font-size: 2rem; font-weight: 900; color: var(--text); margin-bottom: 8px; }
+        .hero-intro p { color: var(--muted); font-size: .95rem; }
+        .whatsapp-screen { max-width: 420px; margin: 0 auto 24px; background: #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+        .whatsapp-header { background: var(--accent); color: #fff; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+        .whatsapp-header .avatar { width: 36px; height: 36px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .whatsapp-header .info { flex: 1; }
+        .whatsapp-header .name { font-weight: 700; font-size: .95rem; }
+        .whatsapp-header .status { font-size: .75rem; opacity: .85; }
+        .whatsapp-chat { background: #ece5dd; padding: 16px 12px; min-height: 280px; }
+        .msg { margin-bottom: 8px; display: flex; }
         .msg.me { justify-content: flex-end; }
         .msg.ai { justify-content: flex-start; }
         .msg-bubble { max-width: 75%; padding: 8px 10px; border-radius: 8px; position: relative; font-size: .9rem; line-height: 1.4; }
@@ -235,26 +103,17 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg">
-            <div class="container">
-                <a class="navbar-brand" href="#inicio">
-                    <span>🤖</span> Pede Aí
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="#inicio">Início</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#como">Como funciona</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#whatsapp">Por que WhatsApp</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#beneficios">Benefícios</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#precos">Cobrança</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
-                    </ul>
-                </div>
+        <div class="container nav">
+            <div class="brand"><i>🤖</i> Pede Aí</div>
+            <div class="links">
+                <a href="#inicio">Início</a>
+                <a href="#como">Como funciona</a>
+                <a href="#whatsapp">Por que WhatsApp</a>
+                <a href="#beneficios">Benefícios</a>
+                <a href="#precos">Cobrança</a>
+                <a href="#contato">Contato</a>
             </div>
-        </nav>
+        </div>
     </header>
 
     <main>
@@ -459,6 +318,16 @@
             <p style="margin-top:14px; font-size:.9rem;">contato@pedeai.com</p>
         </div>
     </footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script>
+const toggle = document.createElement('button');
+toggle.className = 'menu-toggle';
+toggle.innerHTML = '☰';
+toggle.setAttribute('aria-label', 'Menu');
+document.querySelector('.nav').insertBefore(toggle, document.querySelector('.links'));
+toggle.addEventListener('click', () => {
+    document.querySelector('.links').classList.toggle('active');
+    toggle.innerHTML = document.querySelector('.links').classList.contains('active') ? '✕' : '☰';
+});
+</script>
 </body>
 </html>
