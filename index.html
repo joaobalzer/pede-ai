@@ -28,12 +28,28 @@
         h3 { font-size: 1.08rem; font-weight: 750; color: var(--text); margin-bottom: 6px; }
         p { color: var(--muted); margin-bottom: 10px; }
 
-        .hero { background: linear-gradient(135deg, var(--bg1), var(--bg2)); color: #fff; text-align: center; }
-        .hero h1 { -webkit-text-fill-color: #fff; background-clip: text; }
-        .hero p { color: rgba(255,255,255,.95); }
+        .hero { background: linear-gradient(135deg, var(--bg1), var(--bg2)); color: #fff; padding: 40px 24px; }
+        .hero-intro { text-align: center; margin-bottom: 28px; }
+        .hero-intro h1 { font-size: 2rem; font-weight: 900; color: #fff; -webkit-text-fill-color: #fff; margin-bottom: 8px; }
+        .hero-intro p { color: rgba(255,255,255,.95); font-size: .95rem; }
+        .whatsapp-screen { max-width: 420px; margin: 0 auto 24px; background: #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+        .whatsapp-header { background: #075e54; color: #fff; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+        .whatsapp-header .avatar { width: 36px; height: 36px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .whatsapp-header .info { flex: 1; }
+        .whatsapp-header .name { font-weight: 700; font-size: .95rem; }
+        .whatsapp-header .status { font-size: .75rem; opacity: .85; }
+        .whatsapp-chat { background: #ece5dd; padding: 16px 12px; min-height: 280px; }
+        .msg { margin-bottom: 8px; display: flex; }
+        .msg.me { justify-content: flex-end; }
+        .msg.ai { justify-content: flex-start; }
+        .msg-bubble { max-width: 75%; padding: 8px 10px; border-radius: 8px; position: relative; font-size: .9rem; line-height: 1.4; }
+        .msg.me .msg-bubble { background: #dcf8c6; color: #000; border-radius: 8px 8px 0 8px; }
+        .msg.ai .msg-bubble { background: #fff; color: #000; border-radius: 8px 8px 8px 0; }
+        .msg-time { font-size: .7rem; color: #667; margin-top: 2px; text-align: right; }
         .cta { display: inline-block; background: #fff; color: var(--bg1); padding: 12px 22px; border-radius: 999px; text-decoration: none; font-weight: 800; margin: 10px 6px; box-shadow: 0 6px 18px rgba(0,0,0,.2); transition: transform .25s, box-shadow .25s; }
         .cta:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.25); }
         .cta.alt { background: transparent; color: #fff; border: 2px solid #fff; }
+        .hero-ctas { text-align: center; }
 
         .grid { display: grid; gap: 18px; }
         .grid.two { grid-template-columns: 1fr; }
@@ -94,17 +110,61 @@
     <main>
         <section id="inicio" class="hero">
             <div class="container">
-                <h1>Pedidos na obra, sem caos 📱</h1>
-                <p>WhatsApp + IA = fim do pedido perdido</p>
-                <p>O mestre fala, a IA organiza, você recebe CSV pronto</p>
-                <div class="chat">
-                    <div class="bubble me">Acabou o bloco cerâmico 9 furos na Frente 2. Preciso de 500.</div>
-                    <div class="bubble ai">No histórico desta obra você já pediu 3.000 hoje. Confirma que é adicional?</div>
-                    <div class="bubble me">Confere, viramos mais um pavimento.</div>
-                    <div class="bubble ai">Beleza. Encaminhei para compras. Previsão: amanhã 10h. ✓</div>
+                <div class="hero-intro">
+                    <h1>Pedidos na obra via WhatsApp 📱</h1>
+                    <p>Mestre fala com a IA, você recebe CSV organizado</p>
                 </div>
-                <a class="cta" href="#contato">Quero testar</a>
-                <a class="cta alt" href="#como">Como funciona</a>
+                <div class="whatsapp-screen">
+                    <div class="whatsapp-header">
+                        <div class="avatar">🤖</div>
+                        <div class="info">
+                            <div class="name">Pede Aí - Assistente</div>
+                            <div class="status">online</div>
+                        </div>
+                    </div>
+                    <div class="whatsapp-chat">
+                        <div class="msg me">
+                            <div class="msg-bubble">
+                                Acabou bloco cerâmico aqui na laje. Preciso 500.
+                                <div class="msg-time">09:15</div>
+                            </div>
+                        </div>
+                        <div class="msg ai">
+                            <div class="msg-bubble">
+                                Oi! Qual a obra e frente?
+                                <div class="msg-time">09:15</div>
+                            </div>
+                        </div>
+                        <div class="msg me">
+                            <div class="msg-bubble">
+                                Residencial Araucária, Bloco B
+                                <div class="msg-time">09:16</div>
+                            </div>
+                        </div>
+                        <div class="msg ai">
+                            <div class="msg-bubble">
+                                Vi que você já pediu 3.000 blocos hoje nessa frente. Confirma os 500 adicionais?
+                                <div class="msg-time">09:16</div>
+                            </div>
+                        </div>
+                        <div class="msg me">
+                            <div class="msg-bubble">
+                                Confirmo, viramos o pavimento
+                                <div class="msg-time">09:17</div>
+                            </div>
+                        </div>
+                        <div class="msg ai">
+                            <div class="msg-bubble">
+                                Perfeito! ✓<br>Pedido registrado e enviado para compras. Previsão: amanhã 10h.
+                                <div class="msg-time">09:17</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-ctas">
+                    <a class="cta" href="#contato">Quero testar</a>
+                    <a class="cta alt" href="#como">Como funciona</a>
+                </div>
             </div>
         </section>
 
@@ -183,24 +243,18 @@
         <section id="precos">
             <div class="container">
                 <h2>Como funciona a cobrança</h2>
-                <div class="grid two">
-                    <div class="card">
-                        <div class="emoji">🚀</div>
-                        <h3>Plano Piloto</h3>
-                        <p>Ideal para testar em 1 obra real</p>
-                        <ul class="features">
-                            <li>1 número de WhatsApp conectado ao Pede Aí</li>
-                            <li>Cadastro de mestres e engenheiros da obra piloto</li>
-                            <li>Até um volume definido de pedidos por mês</li>
-                            <li>Setup de planilha padrão de insumos e frentes</li>
-                            <li>Ajustes de regras e alertas durante o piloto</li>
-                        </ul>
-                        <p><strong>Fale com a gente para proposta adequada ao tamanho da sua operação.</strong></p>
-                    </div>
-                    <div class="card" style="opacity:.7;">
-                        <h3>Plano Multiobras</h3>
-                        <p>Em breve</p>
-                    </div>
+                <div class="card">
+                    <div class="emoji">🚀</div>
+                    <h3>Plano Piloto</h3>
+                    <p>Ideal para testar em 1 obra real</p>
+                    <ul class="features">
+                        <li>1 número de WhatsApp conectado ao Pede Aí</li>
+                        <li>Cadastro de mestres e engenheiros da obra piloto</li>
+                        <li>Até um volume definido de pedidos por mês</li>
+                        <li>Setup de planilha padrão de insumos e frentes</li>
+                        <li>Ajustes de regras e alertas durante o piloto</li>
+                    </ul>
+                    <p><strong>Fale com a gente para proposta adequada ao tamanho da sua operação.</strong></p>
                 </div>
             </div>
         </section>
@@ -249,27 +303,10 @@
             <p>Automatizando obra, direto do WhatsApp</p>
             <div class="footer-actions">
                 <div class="whats">
-                    <a href="https://wa.me/554299110955" target="_blank" rel="noopener" aria-label="Abrir conversa no WhatsApp">
-                        <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 3C9.383 3 4 8.383 4 15c0 2.128.559 4.124 1.535 5.85L4 29l8.35-1.484A11.92 11.92 0 0 0 16 27c6.617 0 12-5.383 12-12S22.617 3 16 3Z"/><path d="M24.2 19.4c-.2.6-1.1 1.1-1.6 1.1-.4 0-.9 0-2.9-.9-2.4-1-3.9-3.5-4-3.7-.1-.2-1-1.3-1-2.5 0-1.2.6-1.8.8-2.1.2-.3.5-.5.7-.5h.5c.2 0 .4 0 .6.5.2.5.8 1.9.8 2 .1.2.1.4 0 .6-.1.2-.1.4-.3.6-.1.2-.3.5-.5.7-.2.2-.4.4-.2.7.2.2.9 1.5 2.1 2.5 1.5 1.3 2.7 1.7 3 .1.3-.2.5-.2.7-.1.2.1 1.7.8 2 .9.3.1.5.1.6.1.2 0 .6-.2.7-.5.1-.4.5-1.2.6-1.4.1-.2 0-.4 0-.5 0-.1-.6-.3-1.2-.5Z"/></svg>
-                        WhatsApp
-                    </a>
-                </div>
-                <div class="social">
-                    <a href="#" aria-label="LinkedIn">
-                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 8.98h3.96V21H3V8.98Zm7.14 0H14.1v1.64h.05c.69-1.24 2.38-2.55 4.89-2.55 5.23 0 6.2 3.44 6.2 7.92V21h-3.96v-4.96c0-1.18-.02-2.7-1.65-2.7-1.65 0-1.9 1.29-1.9 2.62V21h-3.96V8.98Z"/></svg>
-                        LinkedIn
-                    </a>
-                    <a href="#" aria-label="Instagram">
-                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2.5A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM18 6.8a1.2 1.2 0 1 1-1.2 1.2A1.2 1.2 0 0 1 18 6.8Z"/></svg>
-                        Instagram
-                    </a>
-                    <a href="#" aria-label="Facebook">
-                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M13 3h4a1 1 0 0 1 1 1v3h-3a2 2 0 0 0-2 2v3h5l-1 4h-4v6h-4v-6H6v-4h3V9a6 6 0 0 1 6-6Z"/></svg>
-                        Facebook
-                    </a>
+                    <a href="https://wa.me/554299110955" target="_blank" rel="noopener">💬 WhatsApp</a>
                 </div>
             </div>
-            <p style="margin-top:8px;">contato@pedeai.com</p>
+            <p style="margin-top:14px; font-size:.9rem;">contato@pedeai.com</p>
         </div>
     </footer>
 </body>
