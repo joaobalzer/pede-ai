@@ -1,32 +1,1159 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pede AI - Landing Page</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Pede Aí - Pedidos na Obra via WhatsApp</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #1a1a2e;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        nav {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        section {
+            background: #fff;
+            margin: 2rem auto;
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #667eea;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: #444;
+        }
+
+        .hero {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .hero h1 {
+            color: #fff;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.95);
+        }
+
+        .cta {
+            display: inline-block;
+            background: #fff;
+            color: #667eea;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            margin: 1rem 0.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .cta.secondary {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .grid {
+            display: grid;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .chat {
+            background: #e8f5e9;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+
+        .message {
+            background: #fff;
+            padding: 0.8rem 1.2rem;
+            border-radius: 18px;
+            margin: 0.5rem 0;
+            max-width: 80%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .message.ai {
+            background: #667eea;
+            color: #fff;
+            margin-left: auto;
+        }
+
+        .features {
+            list-style: none;
+        }
+
+        .features li {
+            padding: 0.8rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 2rem auto 0;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 1rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid.three {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Welcome to Pede AI</h1>
-        <p>Your gateway to intelligent solutions.</p>
+        <div class="container">
+            <div class="logo">Pede Aí 🏗️</div>
+            <nav>
+                <a href="#inicio">Início</a>
+                <a href="#como">Como funciona</a>
+                <a href="#beneficios">Benefícios</a>
+                <a href="#precos">Preços</a>
+                <a href="#contato">Contato</a>
+            </nav>
+        </div>
     </header>
+
     <main>
-        <section id="features">
-            <h2>Features</h2>
-            <ul>
-                <li>Feature 1: High Performance</li>
-                <li>Feature 2: User-Friendly Interface</li>
-                <li>Feature 3: Customizable Features</li>
-            </ul>
+        <section id="inicio" class="hero">
+            <div class="container">
+                <h1>Pedidos na obra, sem caos 📱</h1>
+                <p>WhatsApp + IA = fim do pedido perdido</p>
+                <p>O mestre fala, a IA organiza, você recebe CSV pronto</p>
+                <div class="chat">
+                    <div class="message">Preciso de 200 sacos de cimento CP-II pra Jardim das Araucárias, estrutura</div>
+                    <div class="message ai">Quantidade acima da média. Confirma?</div>
+                    <div class="message">Sim, ampliamos a laje</div>
+                    <div class="message ai">Registrado ✓</div>
+                </div>
+                <a href="#contato" class="cta">Quero testar</a>
+                <a href="#como" class="cta secondary">Como funciona</a>
+            </div>
         </section>
-        <section id="contact">
-            <h2>Contact Us</h2>
-            <p>Email us at: info@pedeai.com</p>
+
+        <section id="como">
+            <div class="container">
+                <h2>Como rola</h2>
+                <div class="grid">
+                    <div class="card">
+                        <div class="emoji">💬</div>
+                        <h3>1. Mestre fala no Whats</h3>
+                        <p>Texto ou áudio, como sempre faz</p>
+                    </div>
+                    <div class="card">
+                        <div class="emoji">🤖</div>
+                        <h3>2. IA organiza tudo</h3>
+                        <p>Obra, frente, material, quantidade</p>
+                    </div>
+                    <div class="card">
+                        <div class="emoji">⚠️</div>
+                        <h3>3. Alerta se bugou</h3>
+                        <p>Compara com histórico e avisa</p>
+                    </div>
+                    <div class="card">
+                        <div class="emoji">📊</div>
+                        <h3>4. CSV no fim do dia</h3>
+                        <p>Pronto pra Excel ou sistema</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="beneficios">
+            <div class="container">
+                <h2>Por que usar</h2>
+                <ul class="features">
+                    <li>Acabou áudio perdido de 7h da manhã</li>
+                    <li>Zero pedido sem obra ou frente</li>
+                    <li>IA fala com o mestre, não você</li>
+                    <li>Vê onde tá vazando material</li>
+                    <li>Sem app novo, só WhatsApp</li>
+                    <li>CSV automático todo dia</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="precos">
+            <div class="container">
+                <h2>Preços</h2>
+                <div class="card">
+                    <h3>Piloto 🚀</h3>
+                    <p>Teste em 1 obra real</p>
+                    <ul class="features">
+                        <li>1 número WhatsApp conectado</li>
+                        <li>Setup completo dos insumos</li>
+                        <li>Ajustes durante o teste</li>
+                        <li>CSV diário automatizado</li>
+                    </ul>
+                    <p><strong>Fala com a gente pra proposta personalizada</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contato">
+            <div class="container">
+                <h2>Bora testar na sua obra?</h2>
+                <form action="#" method="post">
+                    <input type="text" name="nome" placeholder="Seu nome" required>
+                    <input type="text" name="empresa" placeholder="Empresa" required>
+                    <input type="email" name="email" placeholder="E-mail" required>
+                    <input type="text" name="telefone" placeholder="WhatsApp" required>
+                    <input type="number" name="obras" placeholder="Número de obras ativas" min="1">
+                    <textarea name="mensagem" placeholder="Como rola o pedido hoje?"></textarea>
+                    <button type="submit">Quero rodar um piloto</button>
+                </form>
+            </div>
         </section>
     </main>
+
     <footer>
-        <p>&copy; 2025 Pede AI. All rights reserved.</p>
+        <div class="container">
+            <p><strong>Pede Aí</strong></p>
+            <p>Automatizando obra, direto do WhatsApp</p>
+            <p>contato@pedeai.com</p>
+        </div>
+    </footer>
+</body>
+</html>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.6;
+            background-color: #fefefe;
+            color: #1a3a52;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: #ffffff;
+            border-bottom: 2px solid #1a3a52;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a3a52;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: #1a3a52;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #87ceeb;
+            text-decoration: underline;
+        }
+
+        section {
+            padding: 4rem 0;
+        }
+
+        .section-header {
+            border-top: 4px solid #87ceeb;
+            padding-top: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #1a3a52;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #1a3a52;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .hero-grid {
+            display: grid;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #1a3a52;
+        }
+
+        .benefit-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .benefit-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .benefit-list li::before {
+            content: "▶";
+            color: #87ceeb;
+            position: absolute;
+            left: 0;
+        }
+
+        .btn-primary {
+            background-color: #87ceeb;
+            color: #1a3a52;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary:hover {
+            background-color: #6bb8db;
+        }
+
+        .btn-secondary {
+            color: #1a3a52;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .btn-secondary:hover {
+            color: #87ceeb;
+        }
+
+        .chat-mockup {
+            background-color: #ffffff;
+            border: 2px solid #1a3a52;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .chat-header {
+            background-color: #87ceeb;
+            color: #1a3a52;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+
+        .message.left {
+            background-color: #f5f5f5;
+            border: 1px solid #e0e0e0;
+        }
+
+        .message.right {
+            background-color: #87ceeb;
+            color: #1a3a52;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .cards-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border: 2px solid #87ceeb;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .step-number {
+            background-color: #87ceeb;
+            color: #1a3a52;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            color: #1a3a52;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .comparison {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .comparison-item {
+            background-color: #ffffff;
+            border: 2px solid #e0e0e0;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .comparison-item.new {
+            border-color: #87ceeb;
+            background-color: #f8fdff;
+        }
+
+        .comparison-item h4 {
+            color: #1a3a52;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-card {
+            background-color: #ffffff;
+            border: 2px solid #87ceeb;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-card h3 {
+            color: #1a3a52;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card .subtitle {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .coming-soon {
+            opacity: 0.6;
+            border-color: #e0e0e0;
+        }
+
+        .faq-item {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .faq-question {
+            color: #1a3a52;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .faq-answer {
+            color: #555;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #1a3a52;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #87ceeb;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        footer {
+            background-color: #1a3a52;
+            color: #ffffff;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content h3 {
+            color: #87ceeb;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #87ceeb;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                gap: 2rem;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .comparison {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            h1 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .cards-grid.four-cols {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .cards-grid.three-cols {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#inicio" class="logo">Pede Aí</a>
+                <div class="nav-links">
+                    <a href="#inicio">Início</a>
+                    <a href="#como-funciona">Como funciona</a>
+                    <a href="#dores">Dores de hoje</a>
+                    <a href="#beneficios">Benefícios</a>
+                    <a href="#whatsapp">Por que WhatsApp</a>
+                    <a href="#para-quem">Para quem</a>
+                    <a href="#por-tras">Como funciona por trás</a>
+                    <a href="#casos">Casos reais</a>
+                    <a href="#precos">Preços</a>
+                    <a href="#faq">FAQ</a>
+                    <a href="#contato">Contato</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="inicio">
+            <div class="container">
+                <div class="section-header">
+                    <div class="hero-grid">
+                        <div class="hero-content">
+                            <h1>Pede Aí: o estagiário digital da sua obra no WhatsApp</h1>
+                            <p class="hero-subtitle">O mestre de obra só conversa com o Pede Aí via WhatsApp. O Pede Aí organiza pedidos por obra, frente, insumo, unidade, compara com histórico e gera CSV + resumo pro engenheiro/comprador.</p>
+                            <p class="hero-subtitle">Sua nova interface é o próprio WhatsApp. Sem portal, sem senha nova, sem tela complicada.</p>
+                            
+                            <ul class="benefit-list">
+                                <li>Chega de áudio perdido pedindo cimento às 7h da manhã.</li>
+                                <li>Fim do pedido sem obra, sem frente de serviço, sem unidade e sem contexto.</li>
+                                <li>O Pede Aí fala com o mestre antes de chegar em você: menos ligação chata, menos stress.</li>
+                                <li>No fim do dia você recebe CSV e análise dos pedidos, pronto pra decidir o que comprar.</li>
+                                <li>Você cuida da obra, o Pede Aí cuida do pedido.</li>
+                            </ul>
+
+                            <div>
+                                <a href="#contato" class="btn-primary">Quero ver uma demo</a>
+                                <a href="#como-funciona" class="btn-secondary">Como funciona na prática</a>
+                            </div>
+                        </div>
+
+                        <div class="chat-mockup">
+                            <div class="chat-header">Conversa simulada</div>
+                            <div class="message left">Fala, Pede Aí, preciso de 200 sacos de cimento CP-II pra Obra Jardim das Araucárias, estrutura.</div>
+                            <div class="message right">Beleza. Essa quantidade está acima do consumo médio dessa frente. Quer manter ou revisar?</div>
+                            <div class="message left">Mantém, ampliamos área da laje, pode seguir.</div>
+                            <div class="message right">Fechado. Vou registrar e colocar no resumo de hoje pro engenheiro.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="como-funciona">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Como funciona o Pede Aí na obra</h2>
+                    <p>O mestre de obra pede insumo pelo WhatsApp, o Pede Aí conversa, valida, organiza, grava em base estruturada e no fim do dia entrega CSV e resumo para o engenheiro ou comprador.</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="step-number">1</div>
+                        <h3>O mestre de obra fala com o Pede Aí pelo WhatsApp</h3>
+                        <p>Ele manda texto ou áudio como sempre. Se faltar obra, frente, unidade ou quantidade, o Pede Aí pergunta.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="step-number">2</div>
+                        <h3>O Pede Aí organiza o pedido</h3>
+                        <p>Identifica: obra, frente de serviço, insumo, unidade de medida, quantidade. Garante que o pedido não fica solto nem incompleto.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="step-number">3</div>
+                        <h3>Validação com histórico e regras</h3>
+                        <p>Compara consumo com histórico da obra, parâmetros definidos com o engenheiro e fase da obra. Sinaliza pedidos fora da curva, possível desperdício ou erro.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="step-number">4</div>
+                        <h3>Resumo e CSV diário</h3>
+                        <p>Gera CSV diário com todos os pedidos. Gera resumo em texto simples: o que foi pedido, por quem, para qual frente, onde tem risco de perda ou gasto acima do normal.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dores">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Dores reais que atolam a obra todo dia</h2>
+                    <p>Construtoras, engenheiros autônomos e equipes enxutas se perdem em mil mensagens, pedidos soltos e falta de visão de números.</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3>Pedido incompleto e informal</h3>
+                        <p>Pedidos chegam por áudio, bilhete, foto de papel, print. Sem obra, frente, unidade ou quantidade clara. Resultado: retrabalho, erro e compra errada.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Perda e sobra de material</h3>
+                        <p>Sem controle fino, se pede "por garantia" o tempo todo. Material sobra, estraga ou some. Difícil provar onde o dinheiro foi parar.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Engenheiro virando SAC de WhatsApp</h3>
+                        <p>Engenheiro passa boa parte do dia respondendo "tem cimento?", "manda brita". Em vez de focar em planejamento, prazo e problema grande.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Zero visão de dados</h3>
+                        <p>Sem histórico organizado, ninguém sabe quanto se pediu de cada insumo por obra, frente ou período. Sem base pra negociar melhor com fornecedor ou cortar desperdício.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="beneficios">
+            <div class="container">
+                <div class="section-header">
+                    <h2>O que o Pede Aí entrega na prática</h2>
+                </div>
+
+                <div class="cards-grid three-cols">
+                    <div class="card">
+                        <h3>Menos gargalo no engenheiro</h3>
+                        <p>O Pede Aí segura a conversa com o mestre o dia inteiro. Você recebe o pedido organizado, alertas e o que realmente precisa de decisão.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Pedidos padronizados</h3>
+                        <p>Todo pedido com obra, frente, insumo, unidade e quantidade. Adeus pedido solto e confuso em áudio.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Redução de desperdício</h3>
+                        <p>Alertas quando consumo sai da curva. Ajuda a enxergar onde está tendo perda, desvio ou excesso.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>CSV e análises automáticas</h3>
+                        <p>Geração automática de CSV diário. Fácil de abrir no Excel, BI ou mandar para o financeiro.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Nada de sistema novo na obra</h3>
+                        <p>O mestre continua usando só o WhatsApp. A automação acontece entre o WhatsApp e os seus dados.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Menos ruído e mais performance</h3>
+                        <p>Menos tempo perdido em mil mensagens soltas. Mais foco na obra, em prazo e em resultado.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="whatsapp">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Por que a interface é 100% WhatsApp</h2>
+                    <p>O mestre de obra já vive no WhatsApp. Obrigar a usar portal ou app novo quase sempre falha. O Pede Aí vira mais um contato na agenda, não mais um sistema.</p>
+                    <p>Para engenheiros, donos e equipes enxutas, a "nova tela" são os resumos e CSVs.</p>
+                </div>
+
+                <div class="comparison">
+                    <div class="comparison-item">
+                        <h4>Jeito antigo</h4>
+                        <ul>
+                            <li>Grupo de Whats bagunçado</li>
+                            <li>Áudio de 2 minutos pedindo material</li>
+                            <li>Anotações em caderno ou planilha manual</li>
+                            <li>Engenheiro caçando informação no histórico</li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-item new">
+                        <h4>Com o Pede Aí</h4>
+                        <ul>
+                            <li>Conversa estruturada com o agente</li>
+                            <li>Perguntas automáticas quando falta informação</li>
+                            <li>Pedido gravado e organizado</li>
+                            <li>CSV diário e visão consolidada</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="para-quem">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Para quem o Pede Aí foi feito</h2>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3>Construtoras e incorporadoras</h3>
+                        <p>Várias obras rodando ao mesmo tempo. Muitos mestres e pouco tempo para organizar pedido.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Empresas de obras residenciais e comerciais</h3>
+                        <p>Equipes enxutas, foco em prazo e caixa. Precisam automatizar pedido sem enfiar mais um sistema no time.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Engenheiros autônomos e squads pequenos</h3>
+                        <p>Cuidam de várias obras com estrutura mínima. Querem performance e automação sem se perder em mil mensagens.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Donos de pequenas construtoras</h3>
+                        <p>Cansados de pedido confuso por WhatsApp. Querem saber para onde o material está indo e quanto estão gastando.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="por-tras">
+            <div class="container">
+                <div class="section-header">
+                    <h2>O que o Pede Aí faz por trás da conversa</h2>
+                    <p>O Pede Aí:</p>
+                    <ul class="benefit-list">
+                        <li>Registra cada pedido de insumo de forma estruturada</li>
+                        <li>Guarda obra, frente, insumo, unidade, quantidade, data e quem pediu</li>
+                        <li>Compara com histórico e parâmetros combinados com o cliente</li>
+                        <li>Gera base para relatórios, BI e negociação com fornecedor</li>
+                        <li>Foi pensado para ser plugado em planilhas e sistemas que o cliente já usa</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="casos">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Cenários onde o Pede Aí faz diferença</h2>
+                </div>
+
+                <div class="cards-grid three-cols">
+                    <div class="card">
+                        <h3>Obra vertical com várias frentes</h3>
+                        <p>Mestre pedindo concreto, aço e forma para frentes diferentes. Pede Aí separa por frente e evita confusão de consumo.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Reforma com equipe enxuta</h3>
+                        <p>Engenheiro autônomo tocando 3 reformas ao mesmo tempo. Pede Aí segura os pedidos, organiza tudo e envia CSV diário.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Pequena construtora de bairro</h3>
+                        <p>Dono faz tudo: compra, obra, cliente. Pede Aí vira o "estagiário digital" que organiza pedido e mostra onde está indo o dinheiro.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="precos">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Como funciona a cobrança</h2>
+                    <p>O Pede Aí está em fase de pilotos com poucas obras, para validar bem.</p>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Plano Piloto</h3>
+                    <div class="subtitle">Ideal para testar em 1 obra real</div>
+                    <ul class="pricing-features">
+                        <li>1 número de WhatsApp conectado ao Pede Aí</li>
+                        <li>Cadastro de mestres de obra e engenheiros da obra piloto</li>
+                        <li>Até um volume definido de pedidos por mês</li>
+                        <li>Setup de planilha padrão de insumos e frentes</li>
+                        <li>Ajustes de regras e alertas durante o piloto</li>
+                    </ul>
+                    <p>Fale com a gente para receber uma proposta adequada ao tamanho da sua operação.</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div class="pricing-card coming-soon">
+                        <h3>Plano Multiobras</h3>
+                        <div class="subtitle">Em breve</div>
+                    </div>
+                    <div class="pricing-card coming-soon">
+                        <h3>Plano Equipe Enxuta</h3>
+                        <div class="subtitle">Em breve</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Perguntas frequentes</h2>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">O Pede Aí substitui meu engenheiro?</div>
+                    <div class="faq-answer">Não; é um estagiário digital que organiza pedido e libera o engenheiro para decidir e priorizar.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Funciona só com WhatsApp Business?</div>
+                    <div class="faq-answer">Usa integração profissional com WhatsApp, pensada para uso em empresa.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Preciso trocar o número da empresa?</div>
+                    <div class="faq-answer">Pode usar um número dedicado ao Pede Aí ou uma estratégia combinada; depende de como a empresa prefere operar.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">O Pede Aí fala sobre qualquer assunto?</div>
+                    <div class="faq-answer">Não; ele é focado em obra, insumo e pedido. Se o assunto fugir, ele puxa a conversa de volta para o contexto da obra.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Onde ficam armazenados os dados dos pedidos?</div>
+                    <div class="faq-answer">Em bases seguras e em estruturas pensadas para histórico e análise (por exemplo, planilhas e bancos organizados).</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Consigo baixar CSV dos pedidos?</div>
+                    <div class="faq-answer">Sim; a ideia é justamente ter CSV diário e histórico fácil de exportar.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Preciso instalar um sistema na obra?</div>
+                    <div class="faq-answer">Não; o time de obra só precisa usar o WhatsApp.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contato">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Vamos conversar sobre um piloto na sua obra?</h2>
+                    <p>O Pede Aí está sendo testado com construtoras, engenheiros autônomos e equipes enxutas. A ideia é rodar piloto em 1 ou poucas obras para mostrar valor rápido sem travar operação.</p>
+                </div>
+
+                <form action="#" method="post">
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <input type="text" id="nome" name="nome" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="empresa">Empresa</label>
+                        <input type="text" id="empresa" name="empresa" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefone">Telefone / WhatsApp</label>
+                        <input type="text" id="telefone" name="telefone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="obras">Número de obras ativas</label>
+                        <input type="number" id="obras" name="obras" min="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mensagem">Mensagem</label>
+                        <textarea id="mensagem" name="mensagem" placeholder="Explique como é o fluxo de pedido hoje"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Quero falar sobre um piloto</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <h3>Pede Aí</h3>
+                <p>Automatizando o dia a dia da obra, direto do WhatsApp.</p>
+                <p>contato@pedeai.com</p>
+                
+                <div class="footer-links">
+                    <a href="#inicio">Início</a>
+                    <a href="#como-funciona">Como funciona</a>
+                    <a href="#beneficios">Benefícios</a>
+                    <a href="#precos">Preços</a>
+                    <a href="#contato">Contato</a>
+                </div>
+            </div>
+        </div>
     </footer>
 </body>
 </html>
