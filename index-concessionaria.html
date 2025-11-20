@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atende Aí - IA de Atendimento para Concessionárias no WhatsApp</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' ry='20' fill='%232c5282'/%3E%3Ccircle cx='35' cy='40' r='6' fill='%23fff'/%3E%3Ccircle cx='65' cy='40' r='6' fill='%23fff'/%3E%3Crect x='25' y='55' width='50' height='8' rx='4' fill='%23fff'/%3E%3Crect x='20' y='15' width='60' height='10' rx='5' fill='%237fa8d1'/%3E%3C/svg%3E">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        :root { --bg:#ffffff; --bg2:#f8fafc; --text:#1e293b; --muted:#64748b; --card:#ffffff; --accent:#7fa8d1; --navy:#2c5282; --border:#e2e8f0; }
+        body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; background: var(--bg); color: var(--text); }
+        .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+        header { position: sticky; top: 0; z-index: 40; background: var(--navy); box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+        .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
+        .brand { font-weight: 800; font-size: 1.2rem; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .brand i { font-style: normal; }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.6rem; cursor: pointer; color: #fff; padding: 4px; }
+        .links { display: flex; gap: 24px; align-items: center; }
+        .links a { color: #fff; text-decoration: none; font-weight: 600; font-size: .92rem; padding: 6px 0; position: relative; transition: opacity .2s; }
+        .links a:hover { opacity: .8; }
+        @media (max-width: 767px) {
+            .menu-toggle { display: block; }
+            .links { position: fixed; top: 64px; left: 0; right: 0; background: var(--navy); flex-direction: column; gap: 0; padding: 16px 0; box-shadow: 0 8px 24px rgba(0,0,0,0.2); display: none; }
+            .links.active { display: flex; }
+            .links a { width: 100%; padding: 14px 24px; border-bottom: 1px solid rgba(255,255,255,.1); }
+        }
+
+        main { padding: 0 0 40px; }
+        section { background: var(--card); border: 1px solid var(--border); padding: 48px 24px; margin: 0 auto; }
+        section:nth-child(even) { background: var(--bg2); }
+        h1 { font-size: 2.2rem; font-weight: 900; color: var(--navy); margin-bottom: 12px; line-height: 1.2; }
+        h2 { font-size: 1.8rem; font-weight: 800; color: var(--navy); margin-bottom: 20px; }
+        h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+        p { color: var(--muted); margin-bottom: 12px; line-height: 1.7; }
+
+        .hero { background: var(--bg); padding: 60px 24px; border-bottom: 3px solid var(--accent); }
+        .hero-intro { text-align: center; margin-bottom: 32px; }
+        .hero-intro h1 { font-size: 2.2rem; color: var(--navy); }
+        .hero-intro p { color: var(--muted); font-size: 1.05rem; max-width: 600px; margin: 0 auto; }
+        .whatsapp-screen { max-width: 420px; margin: 0 auto 28px; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,.15); border: 2px solid var(--border); }
+        .whatsapp-header { background: var(--navy); color: #fff; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+        .whatsapp-header .avatar { width: 38px; height: 38px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+        .whatsapp-header .info { flex: 1; }
+        .whatsapp-header .name { font-weight: 700; font-size: .96rem; }
+        .whatsapp-header .status { font-size: .76rem; opacity: .85; }
+        .whatsapp-chat { background: #ece5dd; padding: 18px 14px; min-height: 300px; }
+        .msg { margin-bottom: 10px; display: flex; }
+        .msg.customer { justify-content: flex-end; }
+        .msg.ai { justify-content: flex-start; }
+        .msg-bubble { max-width: 75%; padding: 9px 12px; border-radius: 8px; position: relative; font-size: .88rem; line-height: 1.4; }
+        .msg.customer .msg-bubble { background: #dcf8c6; color: #000; border-radius: 8px 8px 0 8px; }
+        .msg.ai .msg-bubble { background: #fff; color: #000; border-radius: 8px 8px 8px 0; box-shadow: 0 1px 2px rgba(0,0,0,.1); }
+        .msg-time { font-size: .7rem; color: #667; margin-top: 3px; text-align: right; }
+        .cta { display: inline-block; background: var(--navy); color: #fff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; margin: 8px 6px; box-shadow: 0 4px 12px rgba(44,82,130,.25); transition: transform .2s, box-shadow .2s; }
+        .cta:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(44,82,130,.35); }
+        .cta.alt { background: #fff; color: var(--navy); border: 2px solid var(--navy); }
+        .cta.alt:hover { background: var(--bg2); }
+        .hero-ctas { text-align: center; }
+
+        .grid { display: grid; gap: 20px; }
+        .grid.two { grid-template-columns: 1fr; }
+        .grid.three { grid-template-columns: 1fr; }
+        @media (min-width: 768px) { 
+            .grid.two { grid-template-columns: repeat(2, 1fr); } 
+            .grid.three { grid-template-columns: repeat(3, 1fr); }
+            h1 { font-size: 2.6rem; } 
+        }
+
+        .card { background: #fff; border-radius: 12px; padding: 24px; border: 2px solid var(--border); transition: transform .2s, box-shadow .2s; }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,.12); border-color: var(--accent); }
+        .emoji { font-size: 2.4rem; display: block; margin-bottom: 12px; }
+
+        .features { list-style: none; }
+        .features li { padding: 10px 0 10px 32px; position: relative; color: var(--muted); line-height: 1.6; }
+        .features li::before { content: "✓"; position: absolute; left: 0; top: 10px; color: var(--navy); font-weight: 900; font-size: 1.1rem; }
+
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: none; align-items: center; justify-content: center; padding: 20px; z-index: 100; }
+        .modal:target { display: flex; }
+        .modal-box { background:#fff; max-width: 540px; width: 100%; border-radius: 12px; padding: 28px; box-shadow: 0 20px 60px rgba(0,0,0,.4); position: relative; border: 2px solid var(--border); }
+        .modal-close { position: absolute; right: 20px; top: 14px; text-decoration: none; font-size: 1.8rem; color: #999; }
+        .modal-close:hover { color: #333; }
+        .more { display:inline-block; margin-top:10px; font-weight:700; color: var(--navy); text-decoration:none; border-bottom:2px solid transparent; font-size: .92rem; }
+        .more:hover { border-bottom-color: var(--navy); }
+
+        footer { background: var(--navy); color: #fff; text-align:center; padding: 40px 20px; }
+        footer p { color: rgba(255,255,255,.9); }
+        .footer-actions { display:flex; gap:16px; justify-content:center; align-items:center; flex-wrap:wrap; margin-top:16px; }
+        .whats a { display:inline-flex; align-items:center; gap:10px; background:#25D366; color:#fff; padding:12px 24px; border-radius: 8px; text-decoration:none; font-weight:800; font-size:1rem; box-shadow:0 6px 18px rgba(37,211,102,.4); transition:transform .2s, box-shadow .2s; }
+        .whats a:hover { transform: translateY(-2px); box-shadow:0 10px 24px rgba(37,211,102,.5); }
+        .whats svg { width:22px; height:22px; }
+
+        form { display: grid; gap: 14px; max-width: 600px; margin: 20px auto 0; }
+        input, textarea, select, button { font: inherit; }
+        input, textarea, select { width: 100%; padding: 13px 16px; border-radius: 8px; border: 2px solid var(--border); background: #fff; color: var(--text); }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); }
+        textarea { min-height: 100px; resize: vertical; }
+        button { background: var(--navy); color: #fff; border: 0; padding: 14px 18px; border-radius: 8px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(44,82,130,.3); transition: transform .2s, box-shadow .2s; }
+        button:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(44,82,130,.4); }
+
+        .comparison { display: grid; gap: 16px; margin-top: 20px; }
+        @media (min-width: 768px) { .comparison { grid-template-columns: repeat(2, 1fr); } }
+
+        .faq-item { margin-bottom: 20px; padding: 20px; background: #fff; border: 2px solid var(--border); border-radius: 10px; }
+        .faq-item h3 { color: var(--navy); margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav">
+            <div class="brand"><i>🚗</i> Atende Aí</div>
+            <div class="links">
+                <a href="#inicio">Início</a>
+                <a href="#como-funciona">Como funciona</a>
+                <a href="#dores">Dores</a>
+                <a href="#beneficios">Benefícios</a>
+                <a href="#para-quem">Para quem</a>
+                <a href="#faq">FAQ</a>
+                <a href="#contato">Contato</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="inicio" class="hero">
+            <div class="container">
+                <div class="hero-intro">
+                    <h1>A IA de atendimento da sua concessionária no WhatsApp</h1>
+                    <p>Triagem automática, coleta de CPF e placa, roteamento por setor. Cliente atendido, equipe organizada, dados em CSV.</p>
+                </div>
+                <div class="whatsapp-screen">
+                    <div class="whatsapp-header">
+                        <div class="avatar">🚗</div>
+                        <div class="info">
+                            <div class="name">Atende Aí - Assistente</div>
+                            <div class="status">online</div>
+                        </div>
+                    </div>
+                    <div class="whatsapp-chat">
+                        <div class="msg customer">
+                            <div class="msg-bubble">
+                                Oi, preciso fazer revisão dos 10 mil
+                                <div class="msg-time">10:22</div>
+                            </div>
+                        </div>
+                        <div class="msg ai">
+                            <div class="msg-bubble">
+                                Olá! Para agendar sua revisão, preciso de algumas informações. Qual seu nome completo?
+                                <div class="msg-time">10:22</div>
+                            </div>
+                        </div>
+                        <div class="msg customer">
+                            <div class="msg-bubble">
+                                Carlos Silva
+                                <div class="msg-time">10:23</div>
+                            </div>
+                        </div>
+                        <div class="msg ai">
+                            <div class="msg-bubble">
+                                Obrigado, Carlos! Qual o CPF?
+                                <div class="msg-time">10:23</div>
+                            </div>
+                        </div>
+                        <div class="msg customer">
+                            <div class="msg-bubble">
+                                123.456.789-00
+                                <div class="msg-time">10:24</div>
+                            </div>
+                        </div>
+                        <div class="msg ai">
+                            <div class="msg-bubble">
+                                E a placa do veículo?
+                                <div class="msg-time">10:24</div>
+                            </div>
+                        </div>
+                        <div class="msg customer">
+                            <div class="msg-bubble">
+                                ABC-1234
+                                <div class="msg-time">10:24</div>
+                            </div>
+                        </div>
+                        <div class="msg ai">
+                            <div class="msg-bubble">
+                                Perfeito! Identifiquei: Civic 2022. Sua solicitação de revisão foi registrada e encaminhada para a oficina. Em breve nossa equipe entra em contato para confirmar horário. ✓
+                                <div class="msg-time">10:25</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-ctas">
+                    <a class="cta" href="#contato">Quero testar</a>
+                    <a class="cta alt" href="#como-funciona">Como funciona</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="como-funciona">
+            <div class="container">
+                <h2>Como funciona</h2>
+                <p>O Atende Aí automatiza a triagem e organização dos atendimentos recebidos via WhatsApp na sua concessionária.</p>
+                <div class="grid two" style="margin-top:28px;">
+                    <div class="card">
+                        <span class="emoji">💬</span>
+                        <h3>1. Cliente manda mensagem</h3>
+                        <p>Texto ou áudio, do jeito que preferir. Pode ser cotação de peças, agendamento de revisão, status de serviço, interesse em venda.</p>
+                    </div>
+                    <div class="card">
+                        <span class="emoji">📋</span>
+                        <h3>2. IA coleta dados obrigatórios</h3>
+                        <p>Nome, CPF/CNPJ, placa, modelo do veículo, motivo do contato. Se faltar algo, a IA pergunta automaticamente.</p>
+                    </div>
+                    <div class="card">
+                        <span class="emoji">🎯</span>
+                        <h3>3. Classifica e roteia</h3>
+                        <p>Identifica o setor correto: peças, oficina, funilaria, vendas, garantia, financeiro. Encaminha para a fila certa.</p>
+                    </div>
+                    <div class="card">
+                        <span class="emoji">📊</span>
+                        <h3>4. Gera CSV e relatórios diários</h3>
+                        <p>Volume de atendimentos, SLA, filas por setor, motivos de contato, taxa de abandono. Tudo organizado para análise.</p>
+                        <a class="more" href="#modal-csv">ver exemplo</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dores">
+            <div class="container">
+                <h2>Dores reais de concessionária</h2>
+                <p>O WhatsApp virou o canal principal de atendimento, mas sem estrutura vira caos:</p>
+                <div class="grid two" style="margin-top:24px;">
+                    <div class="card">
+                        <span class="emoji">😵</span>
+                        <h3>Caos de WhatsApp</h3>
+                        <p>Múltiplos números, grupos desorganizados, áudios perdidos, clientes sem resposta. Impossível rastrear quem pediu o quê.</p>
+                    </div>
+                    <div class="card">
+                        <span class="emoji">❌</span>
+                        <h3>Pedido sem placa ou CPF</h3>
+                        <p>Cliente pede orçamento de peça mas não manda placa. Atendente perde tempo caçando informação básica.</p>
+                    </div>
+                    <div class="card">
+                        <span class="emoji">🤦</span>
+                        <h3>Consultor virando SAC</h3>
+                        <p>Vendedor responde dúvida de garantia, mecânico atende pedido de peça. Ninguém faz o que deveria fazer.</p>
+                    </div>
+                    <div class="card">
+                        <span class="emoji">📉</span>
+                        <h3>Zero controle de fila e SLA</h3>
+                        <p>Não sabe quantos clientes estão esperando, quanto tempo demoram para ser atendidos, ou quantos desistiram.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="beneficios">
+            <div class="container">
+                <h2>Benefícios para concessionária e grupo automotivo</h2>
+                <ul class="features">
+                    <li>Triagem automática de atendimentos direto no WhatsApp</li>
+                    <li>Coleta obrigatória de CPF/CNPJ e placa antes de rotear</li>
+                    <li>Filas organizadas por setor (peças, oficina, vendas, funilaria, garantia)</li>
+                    <li>Regras parametrizáveis: prioridade para pane, recall, carro parado</li>
+                    <li>CSV diário com volume, SLA, motivos de contato, taxa de abandono</li>
+                    <li>Menos estresse para o time, mais organização para gestão</li>
+                    <li>Cliente atendido mais rápido, no canal que ele já usa</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="whatsapp">
+            <div class="container">
+                <h2>Por que a interface é 100% WhatsApp</h2>
+                <p>O cliente já está no WhatsApp. Obrigar a usar portal, app ou formulário web cria fricção e abandono.</p>
+                <p>O Atende Aí vira mais um contato na agenda do cliente. Para a equipe interna, a "nova tela" são os CSVs, relatórios e filas organizadas.</p>
+                <div class="comparison">
+                    <div class="card">
+                        <h3>Jeito antigo</h3>
+                        <ul class="features">
+                            <li>Cliente liga ou manda mensagem bagunçada</li>
+                            <li>Atendente anota em papel ou planilha</li>
+                            <li>Pedido vai pro setor errado</li>
+                            <li>Gestor não tem visibilidade de volume ou SLA</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Com o Atende Aí</h3>
+                        <ul class="features">
+                            <li>Cliente conversa com a IA no WhatsApp</li>
+                            <li>Dados coletados e estruturados automaticamente</li>
+                            <li>Roteamento automático para setor correto</li>
+                            <li>CSV e indicadores diários prontos para análise</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="para-quem">
+            <div class="container">
+                <h2>Para quem é o Atende Aí</h2>
+                <div class="grid three" style="margin-top:24px;">
+                    <div class="card">
+                        <span class="emoji">🏢</span>
+                        <h3>Concessionárias de montadora</h3>
+                        <p>Volume alto de atendimento, múltiplos setores, necessidade de organização e indicadores.</p>
+                    </div>
+                    <div class="card">
+                        <span class="emoji">🚙</span>
+                        <h3>Multimarcas e seminovos</h3>
+                        <p>Equipe enxuta, clientes vindos de vários canais, gestão precisa de leads.</p>
+                    </div>
+                    <div class="card">
+                        <span class="emoji">🔧</span>
+                        <h3>Oficinas independentes</h3>
+                        <p>Agendamentos, orçamentos, status de serviço. Organização sem contratar mais gente.</p>
+                    </div>
+                    <div class="card">
+                        <span class="emoji">🏙️</span>
+                        <h3>Grupos com várias unidades</h3>
+                        <p>Padronização de atendimento, consolidação de dados, comparação entre lojas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="por-tras">
+            <div class="container">
+                <h2>O que a IA faz nos bastidores</h2>
+                <p>Explicado em linguagem simples, sem jargão técnico:</p>
+                <ul class="features" style="margin-top:20px;">
+                    <li>Extrai CPF, CNPJ, placa e modelo do veículo das mensagens (texto ou áudio transcrito)</li>
+                    <li>Pergunta o que está faltando até ter informação completa</li>
+                    <li>Aplica regras configuradas pela concessionária (ex: pane = prioridade alta)</li>
+                    <li>Grava tudo numa base estruturada, com timestamp e histórico</li>
+                    <li>Gera CSV e relatórios diários com indicadores de volume, SLA, filas e motivos</li>
+                    <li>Integra com sistemas da concessionária via API (opcional)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="casos">
+            <div class="container">
+                <h2>Casos de uso reais</h2>
+                <div class="grid two" style="margin-top:24px;">
+                    <div class="card">
+                        <span class="emoji">🏢</span>
+                        <h3>Grupo com várias marcas</h3>
+                        <p>5 lojas, 3 marcas, 200+ atendimentos/dia. Atende Aí centraliza triagem, roteia por loja e setor, gera consolidado semanal para diretoria.</p>
+                    </div>
+                    <div class="card">
+                        <span class="emoji">🔧</span>
+                        <h3>Oficina enxuta</h3>
+                        <p>2 mecânicos, 1 recepcionista. IA faz triagem, agenda revisões, coleta placas. Equipe só atende quem já está qualificado.</p>
+                    </div>
+                    <div class="card">
+                        <span class="emoji">🚗</span>
+                        <h3>Loja de seminovos</h3>
+                        <p>Leads chegam por Insta, Facebook, OLX. Atende Aí coleta CPF, interesse, faixa de preço. Vendedor só fala com lead quente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="precos">
+            <div class="container">
+                <h2>Como funciona a cobrança</h2>
+                <div class="card" style="max-width:700px; margin:20px auto 0;">
+                    <span class="emoji">🚀</span>
+                    <h3>Plano Piloto</h3>
+                    <p>Ideal para testar em uma operação real antes de escalar para múltiplas lojas.</p>
+                    <ul class="features" style="margin-top:16px;">
+                        <li>1 número de WhatsApp conectado ao Atende Aí</li>
+                        <li>Cadastro de setores e regras de roteamento</li>
+                        <li>Parametrização de prioridades (pane, recall, etc.)</li>
+                        <li>CSV diário com atendimentos e indicadores</li>
+                        <li>Ajustes de regras e classificações durante o piloto</li>
+                        <li>Suporte direto para setup e treinamento da equipe</li>
+                    </ul>
+                    <p style="margin-top:20px;"><strong>Fale com a gente para proposta adequada ao volume da sua concessionária.</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq">
+            <div class="container">
+                <h2>Perguntas frequentes</h2>
+                <div class="faq-item">
+                    <h3>O Atende Aí substitui atendente humano?</h3>
+                    <p>Não. Ele faz a triagem e coleta de dados obrigatórios. Depois disso, a equipe humana assume o atendimento já com informação estruturada.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Que tipo de WhatsApp preciso?</h3>
+                    <p>WhatsApp Business API (não é o app comum). Nós ajudamos no setup e conexão.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Posso usar o número atual da loja?</h3>
+                    <p>Depende. Se já é WhatsApp Business API, sim. Se é app comum, precisamos migrar ou usar número novo. Orientamos caso a caso.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>A IA atende qualquer assunto?</h3>
+                    <p>Não. Foco exclusivo em contexto automotivo: peças, revisão, funilaria, vendas, garantia, financeiro. Fora disso, ela avisa que não pode ajudar.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Onde ficam armazenados os dados dos clientes?</h3>
+                    <p>Servidor seguro, criptografado, em conformidade com LGPD. Dados não são compartilhados nem usados para outros fins.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Como acesso o CSV de atendimentos?</h3>
+                    <p>Enviado automaticamente por e-mail todo dia, ou acessível via painel web (opcional).</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contato">
+            <div class="container">
+                <h2>Vamos conversar?</h2>
+                <p style="text-align:center; max-width:600px; margin:0 auto 24px;">Preencha o formulário abaixo ou chame direto no WhatsApp. Vamos entender sua operação e montar um piloto adequado.</p>
+                <form action="#" method="post">
+                    <input type="text" name="nome" placeholder="Seu nome completo" required>
+                    <input type="text" name="empresa" placeholder="Nome da concessionária / grupo" required>
+                    <input type="text" name="cidade" placeholder="Cidade e Estado" required>
+                    <input type="email" name="email" placeholder="E-mail profissional" required>
+                    <input type="text" name="telefone" placeholder="WhatsApp para contato" required>
+                    <input type="text" name="lojas" placeholder="Número de lojas / unidades">
+                    <input type="text" name="volume" placeholder="Volume médio de atendimentos/dia (estimativa)">
+                    <textarea name="contexto" placeholder="Como é seu atendimento hoje no WhatsApp? (opcional)"></textarea>
+                    <button type="submit">Quero rodar um piloto</button>
+                </form>
+                <div class="footer-actions" style="margin-top:28px;">
+                    <div class="whats">
+                        <a href="https://wa.me/554299110955" target="_blank" rel="noopener">
+                            <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 3C9.383 3 4 8.383 4 15c0 2.128.559 4.124 1.535 5.85L4 29l8.35-1.484A11.92 11.92 0 0 0 16 27c6.617 0 12-5.383 12-12S22.617 3 16 3Z"/><path d="M24.2 19.4c-.2.6-1.1 1.1-1.6 1.1-.4 0-.9 0-2.9-.9-2.4-1-3.9-3.5-4-3.7-.1-.2-1-1.3-1-2.5 0-1.2.6-1.8.8-2.1.2-.3.5-.5.7-.5h.5c.2 0 .4 0 .6.5.2.5.8 1.9.8 2 .1.2.1.4 0 .6-.1.2-.1.4-.3.6-.1.2-.3.5-.5.7-.2.2-.4.4-.2.7.2.2.9 1.5 2.1 2.5 1.5 1.3 2.7 1.7 3 .1.3-.2.5-.2.7-.1.2.1 1.7.8 2 .9.3.1.5.1.6.1.2 0 .6-.2.7-.5.1-.4.5-1.2.6-1.4.1-.2 0-.4 0-.5 0-.1-.6-.3-1.2-.5Z"/></svg>
+                            Falar no WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="modal-csv" class="modal">
+            <div class="modal-box">
+                <a class="modal-close" href="#" aria-label="Fechar">×</a>
+                <h3>Exemplo de CSV diário</h3>
+                <p>O arquivo contém colunas como:</p>
+                <ul class="features" style="margin-top:12px;">
+                    <li>Data e hora do atendimento</li>
+                    <li>Nome do cliente, CPF, placa, modelo</li>
+                    <li>Motivo do contato (revisão, peças, funilaria, etc.)</li>
+                    <li>Setor roteado (oficina, vendas, garantia, etc.)</li>
+                    <li>Status (aguardando, atendido, abandonado)</li>
+                    <li>Tempo de espera (SLA)</li>
+                </ul>
+                <p style="margin-top:12px;">Pronto para abrir no Excel, Google Sheets ou BI.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p><strong>Atende Aí 🚗</strong></p>
+            <p>IA de atendimento para concessionárias, direto no WhatsApp</p>
+            <div class="footer-actions">
+                <div class="whats">
+                    <a href="https://wa.me/554299110955" target="_blank" rel="noopener">💬 Falar no WhatsApp</a>
+                </div>
+            </div>
+            <p style="margin-top:18px; font-size:.9rem;">contato@atendeai.com</p>
+        </div>
+    </footer>
+<script>
+const toggle = document.createElement('button');
+toggle.className = 'menu-toggle';
+toggle.innerHTML = '☰';
+toggle.setAttribute('aria-label', 'Menu');
+document.querySelector('.nav').insertBefore(toggle, document.querySelector('.links'));
+toggle.addEventListener('click', () => {
+    document.querySelector('.links').classList.toggle('active');
+    toggle.innerHTML = document.querySelector('.links').classList.contains('active') ? '✕' : '☰';
+});
+</script>
+</body>
+</html>
