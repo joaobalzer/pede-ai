@@ -37,7 +37,7 @@
 
         .grid { display: grid; gap: 18px; }
         .grid.two { grid-template-columns: 1fr; }
-        @media (min-width: 768px) { .grid.two { grid-template-columns: repeat(2, 1fr); } h1 { font-size: 2.9rem; } }
+        @media (min-width: 768px) { .grid.two { grid-template-columns: repeat(2, 1fr); } h1 { font-size: 2.9rem; } .hero { text-align: left; } }
 
         .card { background: #f9fafb; border-radius: 14px; padding: 18px; border: 1px solid rgba(102,126,234,.18); transition: transform .25s, box-shadow .25s; }
         .card:hover { transform: translateY(-6px); box-shadow: 0 14px 28px rgba(102,126,234,.25); }
@@ -61,8 +61,11 @@
 
         footer { text-align:center; color: rgba(255,255,255,.92); padding: 22px 0 28px; }
         .footer-actions { display:flex; gap:14px; justify-content:center; align-items:center; flex-wrap:wrap; margin-top:10px; }
-        .social a, .whats a { display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:#fff; background: rgba(255,255,255,.12); padding:8px 12px; border-radius: 999px; border:1px solid rgba(255,255,255,.25); }
-        .social svg, .whats svg { width:18px; height:18px; }
+        .social a, .whats a { display:inline-flex; align-items:center; text-decoration:none; border-radius: 999px; }
+        .social a { gap:10px; color:#fff; background: rgba(255,255,255,.12); padding:10px 14px; border:1px solid rgba(255,255,255,.25); font-weight:700; }
+        .whats a { gap:10px; background:#25D366; color:#fff; padding:12px 18px; font-weight:800; font-size:1rem; border:0; box-shadow:0 10px 22px rgba(37,211,102,.35); transition:transform .2s, box-shadow .2s; }
+        .whats a:hover { transform: translateY(-1px); box-shadow:0 14px 28px rgba(37,211,102,.45); }
+        .social svg, .whats svg { width:20px; height:20px; }
 
         /* Form */
         form { display: grid; gap: 10px; }
@@ -95,10 +98,10 @@
                 <p>WhatsApp + IA = fim do pedido perdido</p>
                 <p>O mestre fala, a IA organiza, você recebe CSV pronto</p>
                 <div class="chat">
-                    <div class="bubble me">Preciso de 200 sacos de cimento CP-II pra Jardim das Araucárias, estrutura</div>
-                    <div class="bubble ai">Quantidade acima da média. Confirma?</div>
-                    <div class="bubble me">Sim, ampliamos a laje</div>
-                    <div class="bubble ai">Registrado ✓</div>
+                    <div class="bubble me">Acabou o bloco cerâmico 9 furos na Frente 2. Preciso de 500.</div>
+                    <div class="bubble ai">No histórico desta obra você já pediu 3.000 hoje. Confirma que é adicional?</div>
+                    <div class="bubble me">Confere, viramos mais um pavimento.</div>
+                    <div class="bubble ai">Beleza. Encaminhei para compras. Previsão: amanhã 10h. ✓</div>
                 </div>
                 <a class="cta" href="#contato">Quero testar</a>
                 <a class="cta alt" href="#como">Como funciona</a>
@@ -195,7 +198,6 @@
                         <p><strong>Fale com a gente para proposta adequada ao tamanho da sua operação.</strong></p>
                     </div>
                     <div class="card" style="opacity:.7;">
-                        <div class="emoji">🏗️</div>
                         <h3>Plano Multiobras</h3>
                         <p>Em breve</p>
                     </div>
@@ -216,7 +218,7 @@
                 <div class="footer-actions" style="margin-top:14px;">
                     <div class="whats">
                         <a href="https://wa.me/554299110955" target="_blank" rel="noopener">
-                            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#25D366" d="M16 3C9.383 3 4 8.383 4 15c0 2.128.559 4.124 1.535 5.85L4 29l8.35-1.484A11.92 11.92 0 0 0 16 27c6.617 0 12-5.383 12-12S22.617 3 16 3Z"/><path fill="#fff" d="M24.2 19.4c-.2.6-1.1 1.1-1.6 1.1-.4 0-.9 0-2.9-.9-2.4-1-3.9-3.5-4-3.7-.1-.2-1-1.3-1-2.5 0-1.2.6-1.8.8-2.1.2-.3.5-.5.7-.5h.5c.2 0 .4 0 .6.5.2.5.8 1.9.8 2 .1.2.1.4 0 .6-.1.2-.1.4-.3.6-.1.2-.3.5-.5.7-.2.2-.4.4-.2.7.2.2.9 1.5 2.1 2.5 1.5 1.3 2.7 1.7 3 .1.3-.2.5-.2.7-.1.2.1 1.7.8 2 .9.3.1.5.1.6.1.2 0 .6-.2.7-.5.1-.4.5-1.2.6-1.4.1-.2 0-.4 0-.5 0-.1-.6-.3-1.2-.5Z"/></svg>
+                            <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 3C9.383 3 4 8.383 4 15c0 2.128.559 4.124 1.535 5.85L4 29l8.35-1.484A11.92 11.92 0 0 0 16 27c6.617 0 12-5.383 12-12S22.617 3 16 3Z"/><path d="M24.2 19.4c-.2.6-1.1 1.1-1.6 1.1-.4 0-.9 0-2.9-.9-2.4-1-3.9-3.5-4-3.7-.1-.2-1-1.3-1-2.5 0-1.2.6-1.8.8-2.1.2-.3.5-.5.7-.5h.5c.2 0 .4 0 .6.5.2.5.8 1.9.8 2 .1.2.1.4 0 .6-.1.2-.1.4-.3.6-.1.2-.3.5-.5.7-.2.2-.4.4-.2.7.2.2.9 1.5 2.1 2.5 1.5 1.3 2.7 1.7 3 .1.3-.2.5-.2.7-.1.2.1 1.7.8 2 .9.3.1.5.1.6.1.2 0 .6-.2.7-.5.1-.4.5-1.2.6-1.4.1-.2 0-.4 0-.5 0-.1-.6-.3-1.2-.5Z"/></svg>
                             Falar no WhatsApp
                         </a>
                     </div>
@@ -248,7 +250,7 @@
             <div class="footer-actions">
                 <div class="whats">
                     <a href="https://wa.me/554299110955" target="_blank" rel="noopener" aria-label="Abrir conversa no WhatsApp">
-                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#25D366" d="M16 3C9.383 3 4 8.383 4 15c0 2.128.559 4.124 1.535 5.85L4 29l8.35-1.484A11.92 11.92 0 0 0 16 27c6.617 0 12-5.383 12-12S22.617 3 16 3Z"/><path fill="#fff" d="M24.2 19.4c-.2.6-1.1 1.1-1.6 1.1-.4 0-.9 0-2.9-.9-2.4-1-3.9-3.5-4-3.7-.1-.2-1-1.3-1-2.5 0-1.2.6-1.8.8-2.1.2-.3.5-.5.7-.5h.5c.2 0 .4 0 .6.5.2.5.8 1.9.8 2 .1.2.1.4 0 .6-.1.2-.1.4-.3.6-.1.2-.3.5-.5.7-.2.2-.4.4-.2.7.2.2.9 1.5 2.1 2.5 1.5 1.3 2.7 1.7 3 .1.3-.2.5-.2.7-.1.2.1 1.7.8 2 .9.3.1.5.1.6.1.2 0 .6-.2.7-.5.1-.4.5-1.2.6-1.4.1-.2 0-.4 0-.5 0-.1-.6-.3-1.2-.5Z"/></svg>
+                        <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 3C9.383 3 4 8.383 4 15c0 2.128.559 4.124 1.535 5.85L4 29l8.35-1.484A11.92 11.92 0 0 0 16 27c6.617 0 12-5.383 12-12S22.617 3 16 3Z"/><path d="M24.2 19.4c-.2.6-1.1 1.1-1.6 1.1-.4 0-.9 0-2.9-.9-2.4-1-3.9-3.5-4-3.7-.1-.2-1-1.3-1-2.5 0-1.2.6-1.8.8-2.1.2-.3.5-.5.7-.5h.5c.2 0 .4 0 .6.5.2.5.8 1.9.8 2 .1.2.1.4 0 .6-.1.2-.1.4-.3.6-.1.2-.3.5-.5.7-.2.2-.4.4-.2.7.2.2.9 1.5 2.1 2.5 1.5 1.3 2.7 1.7 3 .1.3-.2.5-.2.7-.1.2.1 1.7.8 2 .9.3.1.5.1.6.1.2 0 .6-.2.7-.5.1-.4.5-1.2.6-1.4.1-.2 0-.4 0-.5 0-.1-.6-.3-1.2-.5Z"/></svg>
                         WhatsApp
                     </a>
                 </div>
